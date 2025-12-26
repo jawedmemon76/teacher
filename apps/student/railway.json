@@ -1,8 +1,7 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "RAILPACK",
-    "installCommand": "corepack enable && pnpm install",
+    "builder": "NIXPACKS",
     "buildCommand": "pnpm build"
   },
   "deploy": {
