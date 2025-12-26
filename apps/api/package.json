@@ -1,8 +1,8 @@
 {
-  "name": "@teacher/api",
+  "name": "@coaching/api",
   "version": "0.1.0",
   "private": true,
-  "description": "NestJS API backend for teacher.ac.pk",
+  "description": "Unified backend API (api.coaching.ac.pk)",
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",

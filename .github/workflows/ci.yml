@@ -24,9 +24,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm --filter @teacher/types build
-      - run: pnpm --filter @teacher/utils build
-      - run: pnpm --filter @teacher/ui build
+      - run: pnpm --filter @coaching/types build
+      - run: pnpm --filter @coaching/utils build
+      - run: pnpm --filter @coaching/ui build
 
   check-api:
     name: Check API
@@ -49,13 +49,13 @@ jobs:
       - run: pnpm build
       - run: pnpm lint
 
-  check-landing:
-    name: Check Landing
+  check-web-public:
+    name: Check Web Public (coaching.ac.pk)
     runs-on: ubuntu-latest
     needs: check-packages
     defaults:
       run:
-        working-directory: apps/landing
+        working-directory: apps/web-public
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -68,13 +68,13 @@ jobs:
       - run: cd ../.. && pnpm install
       - run: pnpm build
 
-  check-student:
-    name: Check Student Portal
+  check-web-student:
+    name: Check Web Student (student.ac.pk)
     runs-on: ubuntu-latest
     needs: check-packages
     defaults:
       run:
-        working-directory: apps/student
+        working-directory: apps/web-student
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -87,13 +87,13 @@ jobs:
       - run: cd ../.. && pnpm install
       - run: pnpm build
 
-  check-teacher:
-    name: Check Teacher Portal
+  check-web-teacher:
+    name: Check Web Teacher (teacher.ac.pk)
     runs-on: ubuntu-latest
     needs: check-packages
     defaults:
       run:
-        working-directory: apps/teacher
+        working-directory: apps/web-teacher
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2

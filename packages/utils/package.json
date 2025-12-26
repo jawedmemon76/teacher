@@ -1,8 +1,8 @@
 {
-  "name": "@teacher/utils",
+  "name": "@coaching/utils",
   "version": "0.1.0",
   "private": true,
-  "description": "Shared utilities for teacher.ac.pk",
+  "description": "Shared utilities for the coaching platform",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
