@@ -57,7 +57,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
     return Promise.all(
       models.map((modelKey) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const model = (this as any)[modelKey];
         return model?.deleteMany?.();
       }),
