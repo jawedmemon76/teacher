@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+const LANDING_URL = process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:3000';
+
 const sidebarLinks = [
   { label: 'Dashboard', href: '/', icon: '🏠', active: true },
   { label: 'My Courses', href: '/courses', icon: '📚', active: false },
@@ -47,7 +49,7 @@ const recentSubmissions = [
 ];
 
 const stats = [
-  { label: 'Total Students', value: '2,139', change: '+124 this month', icon: '👥', color: 'bg-blue-100' },
+  { label: 'Total Students', value: '2,139', change: '+124 this month', icon: '👥', color: 'bg-violet-100' },
   { label: 'Active Courses', value: '3', change: '2 published', icon: '📚', color: 'bg-emerald-100' },
   { label: 'Questions Created', value: '1,847', change: '+89 this week', icon: '❓', color: 'bg-purple-100' },
   { label: 'Total Earnings', value: '₨ 47,500', change: 'This month', icon: '💰', color: 'bg-amber-100' },
@@ -59,16 +61,16 @@ export default function TeacherDashboard() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="p-6 border-b border-slate-800">
-          <Link href="https://teacher.ac.pk" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+          <a href={LANDING_URL} className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-violet-700 flex items-center justify-center">
               <span className="text-white font-bold text-xl">T</span>
             </div>
             <div>
               <span className="font-bold text-white">teacher</span>
-              <span className="text-primary-400">.ac.pk</span>
-              <p className="text-xs text-slate-500">Teacher Portal</p>
+              <span className="text-violet-400">.ac.pk</span>
+              <p className="text-xs text-slate-500">Educator Portal</p>
             </div>
-          </Link>
+          </a>
         </div>
 
         <nav className="py-4">
@@ -86,7 +88,7 @@ export default function TeacherDashboard() {
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center">
               <span className="text-white font-medium">DF</span>
             </div>
             <div className="flex-1 min-w-0">
@@ -143,7 +145,7 @@ export default function TeacherDashboard() {
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">My Courses</h2>
-                <Link href="/courses" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                <Link href="/courses" className="text-sm text-violet-600 hover:text-violet-700 font-medium">
                   View all →
                 </Link>
               </div>
@@ -152,7 +154,7 @@ export default function TeacherDashboard() {
                   <div key={course.id} className="card card-hover">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-2xl">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-100 to-violet-200 flex items-center justify-center text-2xl">
                           📚
                         </div>
                         <div>
@@ -189,28 +191,28 @@ export default function TeacherDashboard() {
                 <div className="space-y-3">
                   <Link
                     href="/courses/new"
-                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-violet-300 hover:bg-violet-50 transition-colors"
                   >
                     <span className="text-xl">📚</span>
                     <span className="text-sm font-medium text-slate-700">Create New Course</span>
                   </Link>
                   <Link
                     href="/questions/new"
-                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-violet-300 hover:bg-violet-50 transition-colors"
                   >
                     <span className="text-xl">❓</span>
                     <span className="text-sm font-medium text-slate-700">Add Questions</span>
                   </Link>
                   <Link
                     href="/papers/new"
-                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-violet-300 hover:bg-violet-50 transition-colors"
                   >
                     <span className="text-xl">📝</span>
                     <span className="text-sm font-medium text-slate-700">Create Guess Paper</span>
                   </Link>
                   <Link
                     href="/live"
-                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:border-violet-300 hover:bg-violet-50 transition-colors"
                   >
                     <span className="text-xl">🎥</span>
                     <span className="text-sm font-medium text-slate-700">Start Live Session</span>
@@ -235,7 +237,7 @@ export default function TeacherDashboard() {
                 </div>
                 <Link
                   href="/submissions"
-                  className="block text-center text-sm text-primary-600 hover:text-primary-700 mt-4 font-medium"
+                  className="block text-center text-sm text-violet-600 hover:text-violet-700 mt-4 font-medium"
                 >
                   View all submissions →
                 </Link>
@@ -271,7 +273,7 @@ export default function TeacherDashboard() {
                         </span>
                       </td>
                       <td>
-                        <Link href={`/submissions/${submission.id}`} className="text-primary-600 hover:text-primary-700 font-medium">
+                        <Link href={`/submissions/${submission.id}`} className="text-violet-600 hover:text-violet-700 font-medium">
                           {submission.status === 'pending' ? 'Grade' : 'View'}
                         </Link>
                       </td>
@@ -286,4 +288,3 @@ export default function TeacherDashboard() {
     </div>
   );
 }
-

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.teacher.ac.pk',
+        hostname: 'api.coaching.ac.pk',
       },
       {
         protocol: 'https',
@@ -22,13 +22,9 @@ const nextConfig: NextConfig = {
   // Environment variables exposed to the browser
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
-    NEXT_PUBLIC_APP_NAME: 'teacher.ac.pk',
-  },
-
-  // Experimental features
-  experimental: {
-    // Enable React 19 optimizations
-    reactCompiler: false,
+    NEXT_PUBLIC_STUDENT_URL: process.env.NEXT_PUBLIC_STUDENT_URL || 'http://localhost:3002',
+    NEXT_PUBLIC_TEACHER_URL: process.env.NEXT_PUBLIC_TEACHER_URL || 'http://localhost:3003',
+    NEXT_PUBLIC_APP_NAME: 'coaching.ac.pk',
   },
 
   // Headers for security
@@ -54,11 +50,22 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects
+  // Redirects: www to non-www
   async redirects() {
-    return [];
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.coaching.ac.pk',
+          },
+        ],
+        destination: 'https://coaching.ac.pk/:path*',
+        permanent: true,
+      },
+    ];
   },
 };
 
 export default nextConfig;
-

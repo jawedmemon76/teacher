@@ -1,4 +1,4 @@
-# MASTER_PLAN.md — teacher.ac.pk
+# MASTER_PLAN.md — Coaching Platform
 
 > **Single planning document for the entire project. All planning, architecture, and roadmap changes MUST be made here only.**
 
@@ -6,7 +6,12 @@
 
 ## 1. Overview
 
-**teacher.ac.pk** is a comprehensive, exam-focused digital learning platform serving Pakistan's learners at every educational stage.
+**The Coaching Platform** is a comprehensive, exam-focused digital learning platform serving Pakistan's learners at every educational stage.
+
+### Brand Domains
+- **coaching.ac.pk** — Main brand & landing page
+- **student.ac.pk** — Student learning portal
+- **teacher.ac.pk** — Teacher/instructor portal
 
 ### Who It Serves
 - **Illiterate learners** (children and adults) starting from zero
@@ -37,27 +42,67 @@
 
 ## 2. Architecture Summary
 
-### Domain Structure
+### Domain Structure (Multi-Domain Platform)
 
 | Domain | App | Purpose | Port (Dev) |
 |--------|-----|---------|------------|
-| `teacher.ac.pk` | `apps/landing` | Public marketing/landing page | 3000 |
-| `learn.teacher.ac.pk` | `apps/student` | Student learning portal | 3002 |
-| `teach.teacher.ac.pk` | `apps/teacher` | Teacher/instructor portal | 3003 |
-| `admin.teacher.ac.pk` | `apps/admin` | Platform administration | 3001 |
-| `api.teacher.ac.pk` | `apps/api` | Backend API | 4000 |
-| `*.teacher.ac.pk` | (Future) | Institution subdomains | — |
+| `coaching.ac.pk` | `apps/landing` | Main brand landing page | 3000 |
+| `student.ac.pk` | `apps/student` | Student learning portal | 3002 |
+| `teacher.ac.pk` | `apps/teacher` | Teacher/instructor portal | 3003 |
+| `admin.coaching.ac.pk` | `apps/admin` | Platform administration | 3001 |
+| `api.coaching.ac.pk` | `apps/api` | Unified backend API | 4000 |
+| `*.coaching.ac.pk` | (Future) | Institution subdomains | — |
+
+### Why Three Separate Domains?
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    COACHING PLATFORM                             │
+│                 (Single Unified Service)                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   coaching.ac.pk        student.ac.pk        teacher.ac.pk      │
+│   ┌─────────────┐      ┌─────────────┐      ┌─────────────┐     │
+│   │   Landing   │      │   Student   │      │   Teacher   │     │
+│   │    Page     │      │   Portal    │      │   Portal    │     │
+│   │             │      │             │      │             │     │
+│   │  "Pakistan's│      │  Learn      │      │  Teach      │     │
+│   │  Premier    │      │  Practice   │      │  Create     │     │
+│   │  Coaching"  │      │  Succeed    │      │  Inspire    │     │
+│   └──────┬──────┘      └──────┬──────┘      └──────┬──────┘     │
+│          │                    │                    │             │
+│          │    ┌───────────────┴────────────────────┘             │
+│          │    │                                                  │
+│          └────┴────────────────┐                                 │
+│                                │                                 │
+│                    ┌───────────┴───────────┐                     │
+│                    │  api.coaching.ac.pk   │                     │
+│                    │   (Unified Backend)   │                     │
+│                    └───────────┬───────────┘                     │
+│                                │                                 │
+│              ┌─────────────────┼─────────────────┐               │
+│              ▼                 ▼                 ▼               │
+│         PostgreSQL          Redis      admin.coaching.ac.pk     │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Benefits:**
+- **Clear branding**: Each domain speaks directly to its audience
+- **SEO optimization**: Domain names match search intent
+- **Trust**: `student.ac.pk` feels built FOR students
+- **Simplicity**: Easy to remember, easy to share
+- **Unified backend**: Single API serves all three frontends
 
 ### Monorepo Structure (pnpm workspaces)
 
 ```
-teacher/
+teacher/                         # Repository name (unchanged)
 ├── apps/
-│   ├── landing/      # Public site (teacher.ac.pk)
-│   ├── student/      # Student portal (learn.teacher.ac.pk)
-│   ├── teacher/      # Teacher portal (teach.teacher.ac.pk)
-│   ├── admin/        # Admin panel (admin.teacher.ac.pk)
-│   └── api/          # Backend API (api.teacher.ac.pk)
+│   ├── landing/      # Public site (coaching.ac.pk)
+│   ├── student/      # Student portal (student.ac.pk)
+│   ├── teacher/      # Teacher portal (teacher.ac.pk)
+│   ├── admin/        # Admin panel (admin.coaching.ac.pk)
+│   └── api/          # Backend API (api.coaching.ac.pk)
 ├── packages/
 │   ├── types/        # Shared TypeScript types
 │   ├── ui/           # Shared UI components
@@ -455,51 +500,49 @@ Paper ─► Question (past/guess/mock composition)
 DATABASE_URL=${{Postgres.DATABASE_URL}}
 REDIS_URL=${{Redis.REDIS_URL}}
 NODE_ENV=production
-PORT=8080
-API_URL=https://api.teacher.ac.pk
-CORS_ORIGINS=https://teacher.ac.pk,https://learn.teacher.ac.pk,https://teach.teacher.ac.pk,https://admin.teacher.ac.pk
+API_URL=https://api.coaching.ac.pk
+CORS_ORIGINS=https://coaching.ac.pk,https://student.ac.pk,https://teacher.ac.pk,https://admin.coaching.ac.pk
 UPLOAD_PATH=/app/uploads/images
-CDN_BASE_URL=https://api.teacher.ac.pk
+CDN_BASE_URL=https://api.coaching.ac.pk
 JWT_ACCESS_SECRET=<128 char hex>
 JWT_REFRESH_SECRET=<128 char hex>
 ```
 
 ### Frontend Services (Railway)
 
-**Landing (teacher.ac.pk)**:
+**Landing (coaching.ac.pk)**:
 ```env
 NODE_ENV=production
-PORT=3000
-NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+NEXT_PUBLIC_API_URL=https://api.coaching.ac.pk
+NEXT_PUBLIC_STUDENT_URL=https://student.ac.pk
+NEXT_PUBLIC_TEACHER_URL=https://teacher.ac.pk
 ```
 
-**Student (learn.teacher.ac.pk)**:
+**Student Portal (student.ac.pk)**:
 ```env
 NODE_ENV=production
-PORT=3002
-NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+NEXT_PUBLIC_API_URL=https://api.coaching.ac.pk
+NEXT_PUBLIC_LANDING_URL=https://coaching.ac.pk
 ```
 
-**Teacher (teach.teacher.ac.pk)**:
+**Teacher Portal (teacher.ac.pk)**:
 ```env
 NODE_ENV=production
-PORT=3003
-NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+NEXT_PUBLIC_API_URL=https://api.coaching.ac.pk
+NEXT_PUBLIC_LANDING_URL=https://coaching.ac.pk
 ```
 
-**Admin (admin.teacher.ac.pk)**:
+**Admin (admin.coaching.ac.pk)**:
 ```env
 NODE_ENV=production
-PORT=3001
-NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+NEXT_PUBLIC_API_URL=https://api.coaching.ac.pk
 ```
 
 ### Local Development
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/teacher
+DATABASE_URL=postgresql://postgres:password@localhost:5432/coaching
 REDIS_URL=redis://localhost:6379
 NODE_ENV=development
-PORT=4000
 ```
 
 ---
@@ -510,23 +553,34 @@ PORT=4000
 
 | Service | Root Directory | Watch Paths | Domain |
 |---------|---------------|-------------|--------|
-| `landing` | `apps/landing` | `apps/landing/**`, `packages/**` | `teacher.ac.pk` |
-| `student` | `apps/student` | `apps/student/**`, `packages/**` | `learn.teacher.ac.pk` |
-| `teacher` | `apps/teacher` | `apps/teacher/**`, `packages/**` | `teach.teacher.ac.pk` |
-| `admin` | `apps/admin` | `apps/admin/**`, `packages/**` | `admin.teacher.ac.pk` |
-| `api` | `apps/api` | `apps/api/**`, `packages/**` | `api.teacher.ac.pk` |
+| `landing` | `apps/landing` | `apps/landing/**`, `packages/**` | `coaching.ac.pk` |
+| `student` | `apps/student` | `apps/student/**`, `packages/**` | `student.ac.pk` |
+| `teacher` | `apps/teacher` | `apps/teacher/**`, `packages/**` | `teacher.ac.pk` |
+| `admin` | `apps/admin` | `apps/admin/**`, `packages/**` | `admin.coaching.ac.pk` |
+| `api` | `apps/api` | `apps/api/**`, `packages/**` | `api.coaching.ac.pk` |
 | `postgres` | — | — | (internal) |
 | `redis` | — | — | (internal) |
 
-### DNS Records (at domain registrar)
+### DNS Records
 
+**For coaching.ac.pk (at registrar):**
 ```
 CNAME  @       → <railway-landing>.up.railway.app
 CNAME  www     → <railway-landing>.up.railway.app
-CNAME  learn   → <railway-student>.up.railway.app
-CNAME  teach   → <railway-teacher>.up.railway.app
 CNAME  admin   → <railway-admin>.up.railway.app
 CNAME  api     → <railway-api>.up.railway.app
+```
+
+**For student.ac.pk (at registrar):**
+```
+CNAME  @       → <railway-student>.up.railway.app
+CNAME  www     → <railway-student>.up.railway.app
+```
+
+**For teacher.ac.pk (at registrar):**
+```
+CNAME  @       → <railway-teacher>.up.railway.app
+CNAME  www     → <railway-teacher>.up.railway.app
 ```
 
 ---
@@ -537,8 +591,9 @@ CNAME  api     → <railway-api>.up.railway.app
 |------|--------|--------|
 | 2025-12-26 | Initial MASTER_PLAN.md created | AI Agent |
 | 2025-12-26 | Added separate portals (student, teacher) architecture | AI Agent |
+| 2025-12-26 | Changed to multi-domain: coaching.ac.pk, student.ac.pk, teacher.ac.pk | AI Agent |
 
 ---
 
-*This document is the ONLY planning/spec/architecture document for teacher.ac.pk. Do not create additional planning files.*
+*This document is the ONLY planning/spec/architecture document for the Coaching Platform. Do not create additional planning files.*
 

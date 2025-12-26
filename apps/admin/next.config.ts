@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.teacher.ac.pk',
+        hostname: 'api.coaching.ac.pk',
       },
       {
         protocol: 'https',
@@ -22,12 +22,7 @@ const nextConfig: NextConfig = {
   // Environment variables exposed to the browser
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
-    NEXT_PUBLIC_APP_NAME: 'teacher.ac.pk Admin',
-  },
-
-  // Experimental features
-  experimental: {
-    reactCompiler: false,
+    NEXT_PUBLIC_APP_NAME: 'Coaching Platform Admin',
   },
 
   // Headers for security
@@ -52,7 +47,11 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // No www redirect needed for admin (it's a subdomain)
+  async redirects() {
+    return [];
+  },
 };
 
 export default nextConfig;
-

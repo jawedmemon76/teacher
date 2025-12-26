@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 
+const STUDENT_URL = process.env.NEXT_PUBLIC_STUDENT_URL || 'http://localhost:3002';
+const TEACHER_URL = process.env.NEXT_PUBLIC_TEACHER_URL || 'http://localhost:3003';
+
 const educationLevels = [
   {
     title: 'Literacy Program',
@@ -95,10 +98,10 @@ export default function HomePage() {
           <div className="flex h-16 items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-                <span className="text-white font-bold text-xl">T</span>
+                <span className="text-white font-bold text-xl">C</span>
               </div>
               <span className="font-bold text-xl text-slate-900">
-                teacher<span className="text-primary-600">.ac.pk</span>
+                coaching<span className="text-primary-600">.ac.pk</span>
               </span>
             </Link>
 
@@ -115,24 +118,24 @@ export default function HomePage() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Link
-                href="https://learn.teacher.ac.pk/login"
+              <a
+                href={`${STUDENT_URL}/login`}
                 className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
               >
                 Student Login
-              </Link>
-              <Link
-                href="https://teach.teacher.ac.pk/login"
+              </a>
+              <a
+                href={`${TEACHER_URL}/login`}
                 className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
               >
                 Teacher Login
-              </Link>
-              <Link
-                href="https://learn.teacher.ac.pk/register"
+              </a>
+              <a
+                href={`${STUDENT_URL}/register`}
                 className="btn-primary px-5 py-2"
               >
                 Get Started
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -174,18 +177,18 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '200ms' }}>
-              <Link
-                href="https://learn.teacher.ac.pk/register"
+              <a
+                href={`${STUDENT_URL}/register`}
                 className="btn-primary px-8 py-4 text-lg shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-all"
               >
                 Start Learning Free
-              </Link>
-              <Link
-                href="https://teach.teacher.ac.pk/register"
+              </a>
+              <a
+                href={`${TEACHER_URL}/register`}
                 className="btn-outline px-8 py-4 text-lg"
               >
                 Become a Teacher
-              </Link>
+              </a>
             </div>
 
             {/* Stats */}
@@ -285,17 +288,17 @@ export default function HomePage() {
             Ready to Start Your Journey?
           </h2>
           <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of students who are already preparing smarter with teacher.ac.pk
+            Join thousands of students who are already preparing smarter with coaching.ac.pk
           </p>
-          <Link
-            href="https://learn.teacher.ac.pk/register"
+          <a
+            href={`${STUDENT_URL}/register`}
             className="inline-flex items-center gap-2 bg-white text-primary-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-slate-100 transition-colors"
           >
             Create Free Account
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -306,13 +309,17 @@ export default function HomePage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-                  <span className="text-white font-bold">T</span>
+                  <span className="text-white font-bold">C</span>
                 </div>
-                <span className="font-bold text-white">teacher.ac.pk</span>
+                <span className="font-bold text-white">coaching.ac.pk</span>
               </div>
-              <p className="text-sm">
+              <p className="text-sm mb-4">
                 Pakistan&apos;s comprehensive exam-focused digital learning platform.
               </p>
+              <div className="flex gap-2 text-xs">
+                <a href={STUDENT_URL} className="bg-blue-600/20 text-blue-400 px-2 py-1 rounded">student.ac.pk</a>
+                <a href={TEACHER_URL} className="bg-violet-600/20 text-violet-400 px-2 py-1 rounded">teacher.ac.pk</a>
+              </div>
             </div>
 
             <div>
@@ -347,11 +354,10 @@ export default function HomePage() {
           </div>
 
           <div className="border-t border-slate-800 mt-12 pt-8 text-center text-sm">
-            <p>© {new Date().getFullYear()} teacher.ac.pk. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} coaching.ac.pk. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-

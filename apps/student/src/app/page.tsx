@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 
+const LANDING_URL = process.env.NEXT_PUBLIC_LANDING_URL || 'http://localhost:3000';
+
 const sidebarLinks = [
   { label: 'Dashboard', href: '/', icon: '🏠', active: true },
   { label: 'My Courses', href: '/courses', icon: '📚', active: false },
@@ -57,16 +59,16 @@ export default function StudentDashboard() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="p-6 border-b border-slate-200">
-          <Link href="https://teacher.ac.pk" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">T</span>
+          <a href={LANDING_URL} className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+              <span className="text-white font-bold text-xl">S</span>
             </div>
             <div>
-              <span className="font-bold text-slate-900">teacher</span>
-              <span className="text-primary-600">.ac.pk</span>
-              <p className="text-xs text-slate-500">Student Portal</p>
+              <span className="font-bold text-slate-900">student</span>
+              <span className="text-blue-600">.ac.pk</span>
+              <p className="text-xs text-slate-500">Learning Portal</p>
             </div>
-          </Link>
+          </a>
         </div>
 
         <nav className="py-4">
@@ -84,8 +86,8 @@ export default function StudentDashboard() {
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-200">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-              <span className="text-primary-600 font-medium">AK</span>
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+              <span className="text-blue-600 font-medium">AK</span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-slate-900 truncate">Ali Khan</p>
@@ -109,12 +111,12 @@ export default function StudentDashboard() {
                 <span className="text-xl">🔔</span>
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
-              <Link
-                href="https://teacher.ac.pk/help"
+              <a
+                href={`${LANDING_URL}/help`}
                 className="text-slate-500 hover:text-slate-700"
               >
                 <span className="text-xl">❓</span>
-              </Link>
+              </a>
             </div>
           </div>
         </header>
@@ -124,7 +126,7 @@ export default function StudentDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="card">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center text-2xl">
+                <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-2xl">
                   📚
                 </div>
                 <div>
@@ -173,7 +175,7 @@ export default function StudentDashboard() {
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">Continue Learning</h2>
-                <Link href="/courses" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                <Link href="/courses" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
                   View all →
                 </Link>
               </div>
@@ -181,7 +183,7 @@ export default function StudentDashboard() {
                 {enrolledCourses.map((course) => (
                   <div key={course.id} className="card card-hover cursor-pointer">
                     <div className="flex items-start gap-4">
-                      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-3xl">
+                      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-3xl">
                         {course.thumbnail}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -219,7 +221,7 @@ export default function StudentDashboard() {
                   {upcomingTasks.map((task) => (
                     <div key={task.id} className="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        task.type === 'quiz' ? 'bg-primary-100 text-primary-600' :
+                        task.type === 'quiz' ? 'bg-blue-100 text-blue-600' :
                         task.type === 'assignment' ? 'bg-amber-100 text-amber-600' :
                         'bg-purple-100 text-purple-600'
                       }`}>
@@ -260,28 +262,28 @@ export default function StudentDashboard() {
                 <div className="grid grid-cols-2 gap-3">
                   <Link
                     href="/past-papers"
-                    className="p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 text-center transition-colors"
+                    className="p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-center transition-colors"
                   >
                     <span className="text-2xl block mb-1">📝</span>
                     <span className="text-sm font-medium text-slate-700">Past Papers</span>
                   </Link>
                   <Link
                     href="/mock-exams"
-                    className="p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 text-center transition-colors"
+                    className="p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-center transition-colors"
                   >
                     <span className="text-2xl block mb-1">⏱️</span>
                     <span className="text-sm font-medium text-slate-700">Mock Exam</span>
                   </Link>
                   <Link
                     href="/guess-papers"
-                    className="p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 text-center transition-colors"
+                    className="p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-center transition-colors"
                   >
                     <span className="text-2xl block mb-1">🎯</span>
                     <span className="text-sm font-medium text-slate-700">Guess Papers</span>
                   </Link>
                   <Link
                     href="/ask"
-                    className="p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50 text-center transition-colors"
+                    className="p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 text-center transition-colors"
                   >
                     <span className="text-2xl block mb-1">❓</span>
                     <span className="text-sm font-medium text-slate-700">Ask Tutor</span>
@@ -295,4 +297,3 @@ export default function StudentDashboard() {
     </div>
   );
 }
-
