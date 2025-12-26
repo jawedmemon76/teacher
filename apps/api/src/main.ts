@@ -7,11 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS with configured origins
-  // Production domains: coaching.ac.pk, student.ac.pk (or student.coaching.ac.pk), teacher.ac.pk, admin.coaching.ac.pk
+  // Production domains: coaching.ac.pk, student.ac.pk, teacher.ac.pk, admin.coaching.ac.pk
   const corsOrigins = process.env.CORS_ORIGINS?.split(',') || [
     'http://localhost:3000', // landing (coaching.ac.pk)
     'http://localhost:3001', // admin (admin.coaching.ac.pk)
-    'http://localhost:3002', // student (student.ac.pk or student.coaching.ac.pk)
+    'http://localhost:3002', // student (student.ac.pk)
     'http://localhost:3003', // teacher (teacher.ac.pk)
   ];
 
