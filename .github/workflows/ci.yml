@@ -42,10 +42,16 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm --filter @teacher/api prisma:generate
 
-      - name: Build web app
-        run: pnpm build:web
+      - name: Build landing
+        run: pnpm build:landing
 
-      - name: Build admin app
+      - name: Build student portal
+        run: pnpm build:student
+
+      - name: Build teacher portal
+        run: pnpm build:teacher
+
+      - name: Build admin
         run: pnpm build:admin
 
       - name: Build API
@@ -82,8 +88,16 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm --filter @teacher/api prisma:generate
 
-      - name: Lint web
-        run: pnpm lint:web
+      - name: Lint landing
+        run: pnpm lint:landing
+        continue-on-error: true
+
+      - name: Lint student
+        run: pnpm lint:student
+        continue-on-error: true
+
+      - name: Lint teacher
+        run: pnpm lint:teacher
         continue-on-error: true
 
       - name: Lint admin

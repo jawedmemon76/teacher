@@ -1,8 +1,8 @@
 {
-  "name": "@teacher/web",
+  "name": "@teacher/landing",
   "version": "0.1.0",
   "private": true,
-  "description": "Main SPA for teacher.ac.pk - students and teachers",
+  "description": "Public landing/marketing site for teacher.ac.pk",
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",

@@ -116,13 +116,19 @@ export default function HomePage() {
 
             <div className="flex items-center gap-4">
               <Link
-                href="/login"
+                href="https://learn.teacher.ac.pk/login"
                 className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
               >
-                Login
+                Student Login
               </Link>
               <Link
-                href="/register"
+                href="https://teach.teacher.ac.pk/login"
+                className="text-slate-600 hover:text-slate-900 transition-colors font-medium"
+              >
+                Teacher Login
+              </Link>
+              <Link
+                href="https://learn.teacher.ac.pk/register"
                 className="btn-primary px-5 py-2"
               >
                 Get Started
@@ -169,16 +175,16 @@ export default function HomePage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: '200ms' }}>
               <Link
-                href="/register"
+                href="https://learn.teacher.ac.pk/register"
                 className="btn-primary px-8 py-4 text-lg shadow-lg shadow-primary-500/30 hover:shadow-xl hover:shadow-primary-500/40 transition-all"
               >
                 Start Learning Free
               </Link>
               <Link
-                href="/courses"
+                href="https://teach.teacher.ac.pk/register"
                 className="btn-outline px-8 py-4 text-lg"
               >
-                Explore Courses
+                Become a Teacher
               </Link>
             </div>
 
@@ -282,7 +288,7 @@ export default function HomePage() {
             Join thousands of students who are already preparing smarter with teacher.ac.pk
           </p>
           <Link
-            href="/register"
+            href="https://learn.teacher.ac.pk/register"
             className="inline-flex items-center gap-2 bg-white text-primary-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-slate-100 transition-colors"
           >
             Create Free Account

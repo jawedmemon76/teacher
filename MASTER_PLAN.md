@@ -37,14 +37,27 @@
 
 ## 2. Architecture Summary
 
+### Domain Structure
+
+| Domain | App | Purpose | Port (Dev) |
+|--------|-----|---------|------------|
+| `teacher.ac.pk` | `apps/landing` | Public marketing/landing page | 3000 |
+| `learn.teacher.ac.pk` | `apps/student` | Student learning portal | 3002 |
+| `teach.teacher.ac.pk` | `apps/teacher` | Teacher/instructor portal | 3003 |
+| `admin.teacher.ac.pk` | `apps/admin` | Platform administration | 3001 |
+| `api.teacher.ac.pk` | `apps/api` | Backend API | 4000 |
+| `*.teacher.ac.pk` | (Future) | Institution subdomains | — |
+
 ### Monorepo Structure (pnpm workspaces)
 
 ```
 teacher/
 ├── apps/
-│   ├── web/          # Main SPA for students/teachers (teacher.ac.pk)
-│   ├── admin/        # Admin & operations panel (admin.teacher.ac.pk)
-│   └── api/          # NestJS backend API (api.teacher.ac.pk)
+│   ├── landing/      # Public site (teacher.ac.pk)
+│   ├── student/      # Student portal (learn.teacher.ac.pk)
+│   ├── teacher/      # Teacher portal (teach.teacher.ac.pk)
+│   ├── admin/        # Admin panel (admin.teacher.ac.pk)
+│   └── api/          # Backend API (api.teacher.ac.pk)
 ├── packages/
 │   ├── types/        # Shared TypeScript types
 │   ├── ui/           # Shared UI components
@@ -62,7 +75,7 @@ teacher/
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend (web/admin)** | Next.js 16.1+, React 19, TypeScript, TailwindCSS |
+| **Frontend (all apps)** | Next.js 15+, React 19, TypeScript, TailwindCSS |
 | **Backend (api)** | NestJS, Prisma ORM, PostgreSQL, Redis |
 | **Auth** | JWT (access + refresh tokens) |
 | **Deployment** | Railway (Railpack builder) |
@@ -71,17 +84,39 @@ teacher/
 ### High-Level Data Flow
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   web/admin │ ──► │     api     │ ──► │  PostgreSQL │
-│  (Next.js)  │     │  (NestJS)   │     │   + Redis   │
-└─────────────┘     └─────────────┘     └─────────────┘
-       │                   │
-       │                   ▼
-       │            ┌─────────────┐
-       │            │  Cloudflare │
-       │            │   (Media)   │
-       └────────────┴─────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                      Frontends                            │
+├──────────┬───────────┬───────────┬───────────────────────┤
+│ Landing  │  Student  │  Teacher  │        Admin          │
+│ (public) │ (learners)│(educators)│   (platform ops)      │
+└────┬─────┴─────┬─────┴─────┬─────┴──────────┬────────────┘
+     │           │           │                │
+     └───────────┴───────────┴────────────────┘
+                         │
+                         ▼
+               ┌─────────────────┐
+               │   API Service   │
+               │    (NestJS)     │
+               └────────┬────────┘
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+    ┌──────────┐  ┌──────────┐  ┌──────────┐
+    │PostgreSQL│  │  Redis   │  │Cloudflare│
+    │    DB    │  │  Cache   │  │   CDN    │
+    └──────────┘  └──────────┘  └──────────┘
 ```
+
+### Portal Theming
+
+Each portal has a distinct visual identity:
+
+| Portal | Primary Color | Theme |
+|--------|--------------|-------|
+| Landing | Emerald (#059669) | Trust, education, growth |
+| Student | Blue (#2563eb) | Learning, calm, focus |
+| Teacher | Violet (#9333ea) | Expertise, creativity |
+| Admin | Emerald (#059669) | Consistent with brand |
 
 ### SPA Requirement
 - All navigation is client-side (no full page reloads)
@@ -93,6 +128,13 @@ teacher/
 - Each app has its own `railway.json` (Railpack builder)
 - Environment variables reference Railway service variables
 - Auto-deploy on push to `main` branch
+
+### Future: Institution Subdomains (Option C)
+Architecture supports future wildcard subdomains `*.teacher.ac.pk`:
+- Each institution gets: `{slug}.teacher.ac.pk`
+- Resolves to same Next.js app with tenant detection
+- White-label branding per institution
+- Data isolation via Prisma middleware
 
 ---
 
@@ -137,45 +179,48 @@ Paper ─► Question (past/guess/mock composition)
 
 ## 4. Phase Plan
 
-### Phase 0 — Repository & Tooling ✅ IN PROGRESS
+### Phase 0 — Repository & Tooling ✅ COMPLETE
 **Goals**: Establish monorepo foundation with proper tooling
 
 **Scope**:
 - [x] Initialize Git repo with GitHub remote
-- [ ] Create pnpm monorepo structure
-- [ ] Configure pnpm-workspace.yaml
-- [ ] Add root package.json with workspace scripts
-- [ ] Add comprehensive .gitignore
-- [ ] Add CI workflow (.github/workflows/ci.yml)
-- [ ] Create MASTER_PLAN.md (this document)
+- [x] Create pnpm monorepo structure
+- [x] Configure pnpm-workspace.yaml
+- [x] Add root package.json with workspace scripts
+- [x] Add comprehensive .gitignore
+- [x] Add CI workflow (.github/workflows/ci.yml)
+- [x] Create MASTER_PLAN.md (this document)
 
-**Acceptance Criteria**:
+**Acceptance Criteria**: ✅
 - `pnpm install` succeeds at root
 - All apps/packages directories exist
 - CI workflow valid YAML
 
 ---
 
-### Phase 1 — App Skeletons & API Base
+### Phase 1 — App Skeletons & API Base ✅ COMPLETE
 **Goals**: Scaffold all applications with basic configuration
 
 **Scope**:
-- Create `apps/web` (Next.js 16+, App Router, TypeScript, Tailwind)
-- Create `apps/admin` (Next.js 16+, App Router, TypeScript, Tailwind)
-- Create `apps/api` (NestJS with TypeScript)
-- Configure `next.config.ts` for Railway (standalone output, AVIF/WebP)
-- Add `railway.json` to each app
-- Implement `/health` endpoint in API
-- Set up Prisma with initial schema stub
-- Create shared packages (types, ui, utils)
+- [x] Create `apps/landing` (Next.js 15+, public marketing site)
+- [x] Create `apps/student` (Next.js 15+, student learning portal)
+- [x] Create `apps/teacher` (Next.js 15+, teacher/instructor portal)
+- [x] Create `apps/admin` (Next.js 15+, platform admin)
+- [x] Create `apps/api` (NestJS with TypeScript)
+- [x] Configure `next.config.ts` for Railway (standalone output, AVIF/WebP)
+- [x] Add `railway.json` to each app
+- [x] Implement `/health` endpoint in API
+- [x] Set up Prisma with complete schema
+- [x] Create shared packages (types, ui, utils)
 
 **Tech Impact**:
-- Prisma schema: minimal (just datasource config)
+- Prisma schema: Complete domain model
 - API: health module, config module, CORS setup
+- Separate portals with distinct theming
 
-**Acceptance Criteria**:
-- `pnpm dev:web`, `pnpm dev:admin`, `pnpm dev:api` all start
-- `pnpm build:web`, `pnpm build:admin`, `pnpm build:api` all succeed
+**Acceptance Criteria**: ✅
+- All dev scripts start successfully
+- All build scripts complete successfully
 - `/health` returns status, timestamp, version
 - CI passes
 
@@ -412,11 +457,41 @@ REDIS_URL=${{Redis.REDIS_URL}}
 NODE_ENV=production
 PORT=8080
 API_URL=https://api.teacher.ac.pk
-CORS_ORIGINS=https://teacher.ac.pk,https://admin.teacher.ac.pk
+CORS_ORIGINS=https://teacher.ac.pk,https://learn.teacher.ac.pk,https://teach.teacher.ac.pk,https://admin.teacher.ac.pk
 UPLOAD_PATH=/app/uploads/images
 CDN_BASE_URL=https://api.teacher.ac.pk
 JWT_ACCESS_SECRET=<128 char hex>
 JWT_REFRESH_SECRET=<128 char hex>
+```
+
+### Frontend Services (Railway)
+
+**Landing (teacher.ac.pk)**:
+```env
+NODE_ENV=production
+PORT=3000
+NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+```
+
+**Student (learn.teacher.ac.pk)**:
+```env
+NODE_ENV=production
+PORT=3002
+NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+```
+
+**Teacher (teach.teacher.ac.pk)**:
+```env
+NODE_ENV=production
+PORT=3003
+NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
+```
+
+**Admin (admin.teacher.ac.pk)**:
+```env
+NODE_ENV=production
+PORT=3001
+NEXT_PUBLIC_API_URL=https://api.teacher.ac.pk
 ```
 
 ### Local Development
@@ -429,11 +504,39 @@ PORT=4000
 
 ---
 
-## 6. Revision History
+## 6. Railway Services Configuration
+
+### Service Summary
+
+| Service | Root Directory | Watch Paths | Domain |
+|---------|---------------|-------------|--------|
+| `landing` | `apps/landing` | `apps/landing/**`, `packages/**` | `teacher.ac.pk` |
+| `student` | `apps/student` | `apps/student/**`, `packages/**` | `learn.teacher.ac.pk` |
+| `teacher` | `apps/teacher` | `apps/teacher/**`, `packages/**` | `teach.teacher.ac.pk` |
+| `admin` | `apps/admin` | `apps/admin/**`, `packages/**` | `admin.teacher.ac.pk` |
+| `api` | `apps/api` | `apps/api/**`, `packages/**` | `api.teacher.ac.pk` |
+| `postgres` | — | — | (internal) |
+| `redis` | — | — | (internal) |
+
+### DNS Records (at domain registrar)
+
+```
+CNAME  @       → <railway-landing>.up.railway.app
+CNAME  www     → <railway-landing>.up.railway.app
+CNAME  learn   → <railway-student>.up.railway.app
+CNAME  teach   → <railway-teacher>.up.railway.app
+CNAME  admin   → <railway-admin>.up.railway.app
+CNAME  api     → <railway-api>.up.railway.app
+```
+
+---
+
+## 7. Revision History
 
 | Date | Change | Author |
 |------|--------|--------|
 | 2025-12-26 | Initial MASTER_PLAN.md created | AI Agent |
+| 2025-12-26 | Added separate portals (student, teacher) architecture | AI Agent |
 
 ---
 
