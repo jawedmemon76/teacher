@@ -1,42 +1,54 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
+  metadataBase: new URL('https://teacher.ac.pk'),
   title: {
-    default: 'Teacher Portal | teacher.ac.pk',
-    template: '%s | Teacher Portal | teacher.ac.pk',
+    default: 'Teacher Portal | coaching.ac.pk',
+    template: '%s | teacher.ac.pk',
   },
-  description: 'Create courses, manage students, and share your expertise on teacher.ac.pk',
-  keywords: ['education', 'teaching', 'instructor portal', 'courses', 'Pakistan'],
-  metadataBase: new URL('https://teach.teacher.ac.pk'),
+  description: 'Create courses, manage students, build question banks, and grow your teaching business. Join Pakistan\'s largest educator community.',
+  keywords: [
+    'teacher portal',
+    'create courses',
+    'online teaching',
+    'educator platform',
+    'question bank',
+    'teaching tools',
+    'Pakistan teachers',
+  ],
+  authors: [{ name: 'coaching.ac.pk' }],
+  creator: 'coaching.ac.pk',
+  publisher: 'coaching.ac.pk',
   openGraph: {
     type: 'website',
     locale: 'en_PK',
-    url: 'https://teach.teacher.ac.pk',
-    siteName: 'teacher.ac.pk Teacher Portal',
-    title: 'Teacher Portal | teacher.ac.pk',
-    description: 'Create courses, manage students, and share your expertise',
+    url: 'https://teacher.ac.pk',
+    siteName: 'teacher.ac.pk',
+    title: 'Teacher Portal | coaching.ac.pk',
+    description: 'Create courses, manage students, and grow your teaching business.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'teacher.ac.pk',
+      },
+    ],
   },
-  manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#9333ea' },
-    { media: '(prefers-color-scheme: dark)', color: '#7c3aed' },
+    { media: '(prefers-color-scheme: light)', color: '#8b5cf6' },
+    { media: '(prefers-color-scheme: dark)', color: '#6d28d9' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -45,17 +57,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" dir="ltr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-slate-50`}
-      >
+      <body className="antialiased">
         {children}
       </body>
     </html>
   );
 }
-
